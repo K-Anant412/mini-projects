@@ -5,10 +5,10 @@ import { SiHyperskill } from "react-icons/si";
 import { RiContactsFill } from "react-icons/ri";
 import { FaRegFolderOpen } from "react-icons/fa";
 
-const isActiveLink = ({ isActive }) => `text-[23px] font-semibold flex items-center gap-1 transition-all duration-300 
+const isActiveLink = ({ isActive }) => `text-[23px] h-[90%] w-fit font-semibold shrink-0 flex items-center gap-1 transition-all duration-300 
                                         ${ 
                                             isActive
-                                            ? "border rounded-3xl p-1 px-2 bg-black text-white"
+                                            ? "border rounded-3xl p-1 px-2.5 bg-black text-white"
                                             : ""
 
                                         }
@@ -17,7 +17,7 @@ const isActiveLink = ({ isActive }) => `text-[23px] font-semibold flex items-cen
 const Navbar = () => {
   return (
     <>
-        <nav className='w-[65%] h-15 border rounded-3xl p-2 flex items-center justify-around'>
+        <nav className='w-[65%] h-17 rounded-4xl p-2 flex items-center justify-around  border-none shadow-[0_0_20px_rgba(0,0,0,0.12)]'>
             <div className='w-[80%] flex h-full items-center justify-around'>
 
             <NavLink to="/" className={isActiveLink}>

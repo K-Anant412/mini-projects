@@ -11,7 +11,7 @@ const Home = () => {
     <>
         <div className='h-full w-full p-3 flex items-center relative'>
           
-          <div className='w-[50%] h-full p-15 flex flex-col gap-5'>
+          <div className='w-[50%] h-full p-15 flex flex-col gap-5 relative left-4'>
             <a href="#" className='w-40 h-7 border rounded-2xl font-medium text-white bg-black flex items-center justify-center'>open to work</a>
             
             <div className='w-full h-fit p-1'>
@@ -23,11 +23,11 @@ const Home = () => {
                 Kore
               </h1>
 
-              <h2 className='font-["SN-Pro"] text-3xl mt-5 ml-1 '>
+              <h2 className='font-["SN-Pro"] text-4xl font-semibold mt-5 ml-1 '>
                 Backend Developer|
               </h2>
 
-              <p>
+              <p className='max-w-md'>
                 With a solid year of experience designing robust APIs and optimizing database logic, I focus on turning complex technical requirements into stable, high-performing code that powers seamless user experiences.
               </p>
               
@@ -49,7 +49,7 @@ const Home = () => {
 
           </div>
       
-          <div className=' absolute w-30 h-30 border-none rounded-[50%] left-140 bg-white transition-all duration-200 hover:scale-110'>
+          <div className=' absolute w-30 h-30 border-none rounded-[50%] left-140  transition-all duration-200 hover:scale-110'>
 
           </div>
    
