@@ -9,7 +9,7 @@ import image from '../assets/image.jpg'
 const Home = () => {
   return (
     <>
-        <div className='h-full w-full p-3 flex items-center relative'>
+        <div className='h-full w-full p-3 flex items-center relative z-50'>
           
           <div className='w-[50%] h-full p-15 flex flex-col gap-5 relative left-4'>
             <a href="#" className='w-40 h-7 border rounded-2xl font-medium text-white bg-black flex items-center justify-center'>open to work</a>
@@ -40,10 +40,18 @@ const Home = () => {
             
               <h1 className='w-fit h-fit flex gap-4 px-2 py-3 items-center font-medium'>
                 Follow me: 
-                < FaGithub size={21}/>
-                < FaLinkedin size={21}/>
-                < FaDiscord size={21}/>
-                < AiFillInstagram size={21}/>
+                <a href="https://github.com/K-Anant412" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transitions-colors">
+                  <FaGithub size={21}/>
+                </a>
+                <a href="https://www.linkedin.com/in/anant-kore/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transitions-colors">
+                  <FaLinkedin size={21}/>
+                </a>
+                <a href="https://discord.gg/your-invite-code" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-500 transitions-colors">
+                  <FaDiscord size={21}/>
+                </a>
+                <a href="https://instagram.com/your-handle" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transitions-colors">
+                  <AiFillInstagram size={21}/>
+                </a>
               </h1>
             </div>
 
@@ -53,9 +61,12 @@ const Home = () => {
 
           </div>
    
-          <div className='w-[50%] h-full border-none bg-cover bg-center' style={{backgroundImage: `url(${image})`}}>
+          <div className='relative w-[50%] h-full border-none bg-cover bg-center rounded-2xl shadow-gray-600 shadow-[inset_0_0_8px_2px_rgba(0,0,0,0.06)]' style={{backgroundImage: `url(${image})`}}>
 
           </div>
+            {/* <div class="w-20 h-40 bg-gray-100 rounded-r-full absolute top-[60%] shadow-2xl"></div> */}
+          
+
         </div>
     </>
   )

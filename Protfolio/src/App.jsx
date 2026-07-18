@@ -13,11 +13,11 @@ function App() {
 
   return (
     <>
-    <section className='w-screen h-screen overflow-hidden flex flex-col gap-6 items-center p-10 bg-linear-to-b from-white via-zinc-50 to-zinc-200'>
+    <section className='w-screen h-screen overflow-hidden flex flex-col gap-6 items-center p-10 bg-linear-to-t from-gray-100 via-gray-200 to-gray-300'>
       
       <Navbar />
 
-      <section className='w-[85%] h-[85%] border-none rounded-xl  shadow-[0_0_20px_rgba(0,0,0,0.12)] border border-white/70'>
+      <section className='relative w-[85%] h-[85%] border-none rounded-xl  shadow-[0_0_20px_rgba(0,0,0,0.12)] border border-white/70 overflow-hidden bg-[#F4F4F2]'>
         
         <Routes>
           <Route path='/' element={<Home/>}/>
@@ -25,6 +25,8 @@ function App() {
           <Route path='/projects' element={<Projects/>}/>
           <Route path='/contact' element={<Contact/>}/>
         </Routes>
+
+        {/* <div className='w-full h-30 absolute bg-linear-to-l from-gray-500 via-gray-400 to-gray-300 bottom-0.5 z-10'></div> */}
 
       </section>
 

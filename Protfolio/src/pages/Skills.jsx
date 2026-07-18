@@ -1,77 +1,19 @@
 import React from 'react'
 import Card from '../utils/Card'
+import Python_img from '../assets/Python_img.png'
+import React_img from '../assets/React_img.png'
+import SQL_img from '../assets/SQL_img.png'
+import JavaScript_img from '../assets/JavaScript_img.png'
 const Skills = () => {
   return (
     <>
-      <div className='h-full w-full flex items-center justify-around relative overflow-y-hidden overflow-x-auto scrollbar-none  p-3'>
+      <div className='h-full w-full flex items-center justify-around relative overflow-y-hidden overflow-x-auto scrollbar-none gap-10 pl-10 pr-10'>
 
-        <div className="hover-3d">
-          {/* content */}
-          <figure className="w-80 h-100 rounded-2xl shadow-xl border">
-            {/* <img src="https://img.daisyui.com/images/stock/card-1.webp?x" alt="Tailwind CSS 3D card" /> */}
-            <div></div>
-          </figure>
-          {/* 8 empty divs needed for the 3D effect */}
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-
-        <div className="hover-3d">
-          {/* content */}
-          <figure className="w-80 h-100 rounded-2xl shadow-xl border">
-            {/* <img src="https://img.daisyui.com/images/stock/card-1.webp?x" alt="Tailwind CSS 3D card" /> */}
-            <div></div>
-          </figure>
-          {/* 8 empty divs needed for the 3D effect */}
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-
-        <div className="hover-3d">
-          {/* content */}
-          <figure className="w-80 h-100 rounded-2xl shadow-xl border">
-            {/* <img src="https://img.daisyui.com/images/stock/card-1.webp?x" alt="Tailwind CSS 3D card" /> */}
-            <div></div>
-          </figure>
-          {/* 8 empty divs needed for the 3D effect */}
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-
+        <Card name="Python" image={Python_img} sub="nothing" />
+        <Card name="React" image={React_img} sub="nothing" />
+        <Card name="SQL" image={SQL_img} />
+        <Card name="JavaScript" image={JavaScript_img} />
         
-        {/* <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-            <div className="card-actions justify-end">
-              <button className="btn btn-primary">Buy Now</button>
-            </div>
-          </div>
-        </div> */}
-        {/* <Card name="Anant" /> */}
       </div>
 
     </>
