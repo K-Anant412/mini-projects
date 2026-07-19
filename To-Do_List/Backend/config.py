@@ -16,13 +16,15 @@ class Development(Config):
     
     DEBUG=True
     
-    db_user=os.getenv("")
-    db_host=os.getenv("")
-    db_password=os.getenv("")
-    db_port=os.getenv("")
-    db_database=os.getenv("")
+    db_user=os.getenv("DATABASE_USER")
+    db_host=os.getenv("DATABASE_HOST")
+    db_password=os.getenv("HumingBird@30")
+    db_port=os.getenv("DATABASE_PORT")
+    db_database=os.getenv("DATABASE_NAME")
     
-    SQLALCHEMY_DATABASE_URI=f"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_database}"
+    safe_password = quote_plus(db_password) if db_password else ""
+    
+    SQLALCHEMY_DATABASE_URI=f"mysql+pymysql://{db_user}:{safe_password}@{db_host}:{db_port}/{db_database}"
     
 class Production(Config):
     """Production development environment"""
