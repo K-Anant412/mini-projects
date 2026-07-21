@@ -50,14 +50,36 @@ def create_app(config_name="development"):
     app = Flask(__name__)
     
     allowed_origins = os.getenv("FRONTEND_URL", "http://localhost:5173").split(",")
-    cors.init_app(app, resources={r"/api/*": {"origin": allowed_origins}})
+    
+    dev_origins = ["http://localhost:5000", "http://127.0.0.1:5000"]
+    for origin in dev_origins:
+        if origin not in allowed_origins:
+            allowed_origins.append(origin)
+            
+    cors.init_app(
+            app, 
+            resources={
+                r"/api/*": 
+                    {"origins": allowed_origins,
+                     "allow_headers": ["Authorization", "Content-Type"],
+                     "supports_credientials": True
+                     }
+                }
+            )
     
     app.config.from_object(config_options[config_name])
     
     db.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
     jwt.init_app(app)
+    cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
     swagger.init_app(app)
+    
+    from App.Routes.auth import auth_route
+    app.register_blueprint(auth_route, url_prefix="/api/auth")
+    
+    from App.Routes.tasks import tasks_route
+    app.register_blueprint(tasks_route, url_prefix="/api/tasks")
     
     from App import models
     
