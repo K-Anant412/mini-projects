@@ -18,7 +18,7 @@ class Development(Config):
     
     db_user=os.getenv("DATABASE_USER")
     db_host=os.getenv("DATABASE_HOST")
-    db_password=os.getenv("HumingBird@30")
+    db_password=os.getenv("DATABASE_PASSWORD")
     db_port=os.getenv("DATABASE_PORT")
     db_database=os.getenv("DATABASE_NAME")
     
