@@ -97,6 +97,7 @@ def show_task():
         
     return success_response("Task List:", all_tasks)
 
+
 @tasks_route.route("/update_task", methods=["PUT"])
 @jwt_required()
 def update_task():
@@ -157,7 +158,7 @@ def update_task():
 
 @tasks_route.route("/remove_task", methods=["DELETE"])
 @jwt_required()
-def remove_tasks():
+def remove_task():
     """
     Removing Tasks
     ---
