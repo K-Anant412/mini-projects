@@ -3,12 +3,16 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+import Login from './pages/Login'
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <h1 className='w-full h-30 text-3xl font-bold bg-gray-500 text-white'>Hello world</h1>
+      <section className='w-screen h-screen flex items-center justify-center p-10 bg-linear-to-b from-[#6367FF] via-[#8494FF] to-[#C9BEFF]'>
+        <Login />
+      </section>
     </>
   )
 }

@@ -1,11 +1,11 @@
-import React, { creatContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { authService } from '../service/api'; 
 
-export const AuthContext = creatContext(null);
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [lodaing, setLodaing] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const savedUser = localStorage.getItem('user');
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
         if ( savedUser && token ){
             setUser(JSON.parse(savedUser));
         }
-        setLodaing(false);
+        setLoading(false);
     }, []);
 
     const loginUser = async ( email, password ) => {
