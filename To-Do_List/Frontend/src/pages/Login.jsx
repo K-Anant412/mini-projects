@@ -15,13 +15,20 @@ const Login = () => {
 
         const result = await loginUser( data.email, data.password )
         
-        if (!result.success) {
-        setServerError(result.error);
+        if (result.success){
+            navigate("/home");
+        }else{
+            setServerError(result.error)
         }
     };
 
     return (
         <>
+            {serverError && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-lg text-center">
+                {serverError}
+            </div>
+            )}
             <form onSubmit={handleSubmit(onSubmit)} className='w-100 h-fit py-5 border-gray-400 rounded-2xl flex flex-col items-center p-3 shadow-gray-600 shadow-[inset_0_0_8px_2px_rgba(0,0,0,0.06)]'>
                 <h1 className='text-3xl text-gray-700 font-bold p-2 w-full h-fit flex items-center justify-center '>Log-in</h1>
 

@@ -1,13 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { authService } from '../service/api'; 
-import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const savedUser = localStorage.getItem('user');
@@ -24,23 +22,44 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const loginUser = async ( email, password ) => {
+
+        console.log("Login user", email);   
+        
         try{
 
             const response = await authService.login( email, password );
-            const { access_token, user: userData } = response.data;
+            console.log("Response:", response.data);
+            console.log("after login");
+
+            const { access_token, name, email: userEmail } = response.data.data;
+            const userData = {
+                name,
+                email
+            }
+            console.log(userData);
             
             localStorage.setItem('token', access_token);
             localStorage.setItem('user', JSON.stringify(userData));
             setUser(userData);
-            navigate('/home');
             
             return {success:true};
-        }catch ( error ){
-            return {
-                success: false,
-                error: error.response?.data?.error || 'Authentication failes'
-            };
-        }
+        }catch (error) {
+    console.error("Full Error:", error);
+
+    if (error.response) {
+        console.log("Status:", error.response.status);
+        console.log("Data:", error.response.data);
+    } else if (error.request) {
+        console.log("No response received:", error.request);
+    } else {
+        console.log("Error message:", error.message);
+    }
+
+    return {
+        success: false,
+        error: error.response?.data?.error || error.message
+    };
+}
     };
 
     const logoutUser = () => {
