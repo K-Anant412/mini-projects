@@ -19,13 +19,14 @@ function App() {
 
   return (
     <>
-      <section className='w-screen h-screen flex items-center justify-center p-10 bg-linear-to-b from-[#6367FF] via-[#8494FF] to-[#C9BEFF]'>
-        <Routes>
+      <section className='w-screen h-screen flex items-center justify-center p-4 bg-linear-to-b from-[#6367FF] via-[#8494FF] to-[#C9BEFF]'>
+        {/* <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={ <ProtectedRoute> <Home /> </ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
+        </Routes> */}
+        <Home />
       </section>
     </>
   )
