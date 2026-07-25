@@ -6,3 +6,36 @@ load_dotenv()
 
 class Config:
     """Base configuration with shared settings"""
+    
+    SECRET_KEY=os.getenv("SECRET_KEY", "fallback-development-key")
+    JWT_SECRET_KEY=os.getenv("JWT_SECRET_KEY", "fllaback-jwt-secret-key")
+    SQLALCHEMY_TRACK_MODIFICATIONS=False
+    
+class DevelopmentConfig(Config):
+    """Devlopment configurations"""
+ 
+    DEBUG=True
+    
+    db_user = os.getenv("DB_USER")   
+    db_host = os.getenv("DB_HOST")   
+    db_port = os.getenv("DB_PORT")   
+    db_database = os.getenv("DB_NAME")   
+    db_password = quote_plus(os.getenv("DB_PASSWORD"))
+    
+    SQLALCHEMY_TRACK_MODIFICATIONS = f"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_database}"
+    
+class ProductionConfig(Config):
+    """Production configurations""" 
+    
+    DEBUG=True
+    
+    _raw_uri = os.getenv("DATABASE_URL", "sqlite:///production_fallback.db")  
+    if _raw_uri and _raw_uri.startswith("postgres://"):
+        SQLALCHEMY_DATABASE_URI = _raw_uri.replace("postgres://", "postgresql://", 1)
+    else:
+        SQLALCHEMY_DATABASE_URI = _raw_uri
+        
+config_options={
+    "development": DevelopmentConfig,
+    "production": ProductionConfig
+}
