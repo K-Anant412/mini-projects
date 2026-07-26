@@ -44,7 +44,7 @@ swagger_template = {
 }
 swagger = Swagger(config=swagger_config, template=swagger_template)
 
-def create_app(config_name="devlopment"):
+def create_app(config_name="development"):
     """The Application Factory Function"""
     
     app = Flask(__name__)
