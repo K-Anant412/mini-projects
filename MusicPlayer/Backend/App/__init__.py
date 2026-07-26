@@ -10,6 +10,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 cors = CORS()
 jwt = JWTManager()
+swagger = Swagger()
 
 swagger_config = {
     "headers": [],
