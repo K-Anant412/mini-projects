@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import './App.css'
 
@@ -9,8 +9,6 @@ import Projects from './pages/Projects';
 import Skills from './pages/Skills';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
     <section className='w-screen h-screen overflow-hidden flex flex-col gap-6 items-center p-10 bg-linear-to-t from-gray-100 via-gray-200 to-gray-300'>
@@ -24,6 +22,7 @@ function App() {
           <Route path='/skills' element={<Skills/>}/>
           <Route path='/projects' element={<Projects/>}/>
           <Route path='/contact' element={<Contact/>}/>
+          <Route path='*' element={<Navigate to="/" replace />} />
         </Routes>
 
         {/* <div className='w-full h-30 absolute bg-linear-to-l from-gray-500 via-gray-400 to-gray-300 bottom-0.5 z-10'></div> */}
