@@ -62,6 +62,9 @@ def create_app(config_name="development"):
     cors.init_app(app, resources={r"/api/*":{"origin":"*"}})
     swagger.init_app(app)
     
+    from App.Routes.music_player import song_route
+    app.register_blueprint(song_route, url_prifix="/api")
+    
     
     from App import models
     return app
