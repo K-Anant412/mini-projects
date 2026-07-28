@@ -126,9 +126,51 @@ def playlist():
     
 @song_route.route('/playlists/<int:playlist_id>/songs', methods=["POST"])
 def add_song_to_list(playlist_id):
-    
+    """
+    Add a song to a specific playlist
+    ---
+    tags:
+        - Playlists
+    parameters:
+      - name: playlist_id
+        in: path
+        type: integer
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          properties:
+            song_id:
+              type: integer
+              example: 1
+    responses:
+        200:
+            description: Song added to playlist successfully
+        404:
+            description: Playlist or Song not found
+    """
     try:
         data = request.get_json()
-        song_id
+        song_id = data.get("song_id")
+        
+        if not song_id:
+            return error_response("song not found")
+        
+        playlist = Playlist.query.get(playlist_id)
+        song = Song.query.get(song_id)
+        
+        if not playlist or not song:
+            return error_response("song or playlist not found", error_code=404)
+        
+        if song in playlist.songs:
+            return error_response("song already exist in playlist", error_code=409)
+        
+        playlist.songs.append(song)
+        db.session.commit()
+        
+        return success_response(message=f"Added '{song.title}' to playlist '{playlist.name}' successfully")
+    
     except Exception as e:
         return error_response(str(e))
