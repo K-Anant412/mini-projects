@@ -81,3 +81,54 @@ def stream_song(song_id):
         return error_response("File not found")
     except Exception as e:
         return error_response(str(e))
+    
+    
+@song_route.route('/playlist', methods=["POST"])
+def playlist():
+    """
+    Create a new playlist
+    ---
+    tags:
+        - Playlists
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Coding Beats"
+    responses:
+        200:
+            description: Playlist created successfully
+        400:
+            description: Missing playlist name
+    """
+    try:
+        data = request.get_json() or {}
+        playlist_name = data.get('name')
+        
+        if not playlist_name:
+            return error_response("playlist not exist yet")
+        
+        new_playlist = Playlist(name=playlist_name)
+        db.session.add(new_playlist)
+        db.session.commit()
+        
+        return success_response(
+            data={"id": new_playlist.id, "name": new_playlist.name},
+            message="Playlist created successfully"
+        )
+    except Exception as e:
+        return error_response(str(e))
+    
+@song_route.route('/playlists/<int:playlist_id>/songs', methods=["POST"])
+def add_song_to_list(playlist_id):
+    
+    try:
+        data = request.get_json()
+        song_id
+    except Exception as e:
+        return error_response(str(e))
