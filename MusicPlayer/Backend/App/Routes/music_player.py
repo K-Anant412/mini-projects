@@ -41,6 +41,7 @@ def songs():
     except Exception as e:
         return error_response(str(e))
 
+
 @song_route.route("/stream/<int:song_id>", methods=["GET"])
 def stream_song(song_id):
     """
@@ -123,6 +124,7 @@ def playlist():
         )
     except Exception as e:
         return error_response(str(e))
+  
     
 @song_route.route('/playlists/<int:playlist_id>/songs', methods=["POST"])
 def add_song_to_list(playlist_id):
@@ -174,3 +176,87 @@ def add_song_to_list(playlist_id):
     
     except Exception as e:
         return error_response(str(e))
+    
+    
+@song_route.route("/show_playlists", methods=["GET"])
+def show_all_playlists():
+    """
+    Get all playlists along with their songs
+    ---
+    tags:
+        - Playlists
+    responses:
+        200:
+            description: A list of all playlists with their nested songs
+    """
+    try:
+        existing_playlists = Playlist.query.all()
+        
+        if not existing_playlists:
+            return error_response("first create playlist as you want")
+
+        playlists = []
+        for playlist in existing_playlists:
+            
+            song_list = []
+            for song in playlist.songs:
+                song_list.append({
+                    "id": song.id,
+                    "title": song.title,
+                    "artist": song.artist,
+                    "album": song.album,
+                    "duration": song.duration
+                })        
+                
+            playlists.append({
+                "id": playlist.id,
+                "name": playlist.name,
+                "created_at": playlist.date_created,
+                "songs": song_list
+            })
+            
+        return success_response(data=playlists, message="your playlists")
+    
+    except Exception as e:
+        return error_response(str(e))
+
+
+@song_route.route("/songs/<int:song_id>/favorite", methods=["PUT"])
+def toggel_favorite(song_id):
+    """
+    Toggle the favorite status of a song
+    ---
+    tags:
+        - Songs
+    parameters:
+      - name: song_id
+        in: path
+        type: integer
+        required: true
+        description: The ID of the song to favorite/unfavorite
+    responses:
+        200:
+            description: Favorite status toggled successfully
+        404:
+            description: Song not found
+    """
+    try:
+        song = Song.query.get(song_id)
+        
+        if not song:
+            return error_response("song not found")
+        
+        song.is_favorite = not song.is_favorite
+        db.session.commit()
+        
+        return success_response(
+            data={
+                "id": song.id, 
+                "is_favorite": song.is_favorite
+            },
+            message=f"Song { "add to" if song.is_favorite else "removed from"} favorites"
+        )
+        
+    except Exception as e:
+        return error_response(str(e))
+    
