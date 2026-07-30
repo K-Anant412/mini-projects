@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { CiPause1 } from "react-icons/ci";
+import { PiFastForwardThin } from "react-icons/pi";
+import { IoMenu } from "react-icons/io5";
+import { RxLoop } from "react-icons/rx";
 
 export default function App() {
   return (
@@ -14,6 +18,7 @@ export default function App() {
             flex
             items-center
             p-5 
+            gap-10
             shadow-[8px_8px_20px_rgba(0,0,0,0.3),-8px_-8px_20px_rgba(255,255,255,0.15)]
         '>
           
@@ -26,7 +31,7 @@ export default function App() {
               p-1 flex
               flex-col
               items-center
-              gap-5
+              gap-5 px-5
           '>
 
             <h1 
@@ -39,20 +44,83 @@ export default function App() {
                 font-serif
                 shrink-0
             '>
-              Your Playlists....
+              Your Songs....
             </h1>
 
             <ul 
               className='
-
+                  w-full h-full
+                  border-none mb-5 
+                  flex flex-col
+                  items-center
+                  justify-center
+                  overflow-hidden
+                  overflow-y-auto
+                  scrollbar-none
             '>
-              
+              <li className='w-full h-13 border rounded-2xl'>
+
+              </li>
             </ul>
 
           </span>
 
-        </div>
+          <span
+            className='
+              w-[55%] h-full
+              border-none 
+              rounded-3xl
+              shadow-[6px_8px_20px_rgba(0,0,0,0.22),-8px_-8px_20px_rgba(255,255,255,0.12)]
+              p-1 flex
+              flex-col
+              items-center
+              gap-5 px-5
+          '>
+            <div className='w-70 h-70 border rounded-[50%] mt-10 bg-gray-400 border-gray-400'>
 
+            </div>
+
+            <div className='w-[85%] h-12 border rounded-4xl'>
+              <div className="w-full max-w-xl mx-auto p-4">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  className="w-full cursor-pointer"
+                />
+
+                <p className="mt-2 text-center">not</p>
+              </div>
+            </div>
+
+            <div className='w-full h-30 flex items-center justify-around text-white'>
+
+              <button className='w-18 h-18 rounded-[50%] flex items-center justify-center'>
+                <RxLoop size={50} />
+              </button>
+
+              <span className='w-[50%] h-full flex items-center justify-around'>
+
+                <button className='w-20 h-20 rounded-[50%] flex items-center justify-center'>
+                  <PiFastForwardThin size={55} className=' transform rotate-180' />
+                </button>
+
+                <button className='w-20 h-20 rounded-[50%] flex items-center justify-center'>
+                  <CiPause1 size={50} />
+                </button>
+
+                <button className='w-20 h-20 rounded-[50%] flex items-center justify-center'>
+                  <PiFastForwardThin size={55} />
+                </button>
+              </span>
+
+              <button className='w-18 h-18 rounded-[50%] flex items-center justify-center'>
+                <IoMenu size={50} />
+              </button>
+            
+            </div>
+          </span>
+        </div>
       </section>
     </>
   );
