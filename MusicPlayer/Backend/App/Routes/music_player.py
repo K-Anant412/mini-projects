@@ -5,7 +5,7 @@ from App import db
 
 song_route = Blueprint("songs", __name__)
 
-@song_route.route("/songs", methods=["GET"])
+@song_route.route("/songs", methods=["GET"], strict_slashes=False)
 def songs():
     """
     Get all songs
@@ -41,8 +41,7 @@ def songs():
     except Exception as e:
         return error_response(str(e))
 
-
-@song_route.route("/stream/<int:song_id>", methods=["GET"])
+@song_route.route("/stream/<int:song_id>", methods=["GET"], strict_slashes=False)
 def stream_song(song_id):
     """
     Stream a specific song by ID
@@ -81,10 +80,9 @@ def stream_song(song_id):
     except FileNotFoundError:
         return error_response("File not found")
     except Exception as e:
-        return error_response(str(e))
+        return error_response(str(e))   
     
-    
-@song_route.route('/playlist', methods=["POST"])
+@song_route.route('/playlist', methods=["POST"], strict_slashes=False)
 def playlist():
     """
     Create a new playlist
@@ -124,9 +122,8 @@ def playlist():
         )
     except Exception as e:
         return error_response(str(e))
-  
     
-@song_route.route('/playlists/<int:playlist_id>/songs', methods=["POST"])
+@song_route.route('/playlists/<int:playlist_id>/songs', methods=["POST"], strict_slashes=False)
 def add_song_to_list(playlist_id):
     """
     Add a song to a specific playlist
@@ -176,9 +173,8 @@ def add_song_to_list(playlist_id):
     
     except Exception as e:
         return error_response(str(e))
-    
-    
-@song_route.route("/show_playlists", methods=["GET"])
+       
+@song_route.route("/show_playlists", methods=["GET"], strict_slashes=False)
 def show_all_playlists():
     """
     Get all playlists along with their songs
@@ -220,8 +216,7 @@ def show_all_playlists():
     except Exception as e:
         return error_response(str(e))
 
-
-@song_route.route("/songs/<int:song_id>/favorite", methods=["PUT"])
+@song_route.route("/songs/<int:song_id>/favorite", methods=["PUT"], strict_slashes=False)
 def toggel_favorite(song_id):
     """
     Toggle the favorite status of a song

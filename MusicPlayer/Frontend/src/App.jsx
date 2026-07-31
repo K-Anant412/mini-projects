@@ -1,10 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { songService } from './service/api';
+
 import { CiPause1 } from "react-icons/ci";
 import { PiFastForwardThin } from "react-icons/pi";
 import { IoMenu } from "react-icons/io5";
 import { RxLoop } from "react-icons/rx";
 
 export default function App() {
+  
+  const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try{
+        setLoading(true);
+
+        const response = await songService.getSongs();
+
+        if (response.data && response.data.success) {
+          setSongs(response.data.data);
+        }else{
+          setError("failes to parse music library data.")
+        }
+
+        console.log(response.data.data);
+        
+      }catch(err){
+        console.error("Error fetching tracks from server:", err);
+        setError("Could not connect to the music server.");
+      }finally{
+        setLoading(false);
+      }
+    };
+    fetchSongs();
+  }, [])
+  
+
   return (
     <>
       <section className='h-screen w-screen flex items-center justify-center p-10 lg:p-20 bg-linear-to-t from-[#403d88ee] via-[#8B639B] to-[#AF719D]'>
@@ -54,13 +87,13 @@ export default function App() {
                   flex flex-col
                   items-center
                   justify-center
-                  overflow-hidden
+                  overflow-x-hidden
                   overflow-y-auto
                   scrollbar-none
+                  gap-3 pt-4
+                  text-white
             '>
-              <li className='w-full h-13 border rounded-2xl'>
-
-              </li>
+              <li className='w-full h-13 border rounded-2xl shrink-0'> </li>
             </ul>
 
           </span>

@@ -63,8 +63,7 @@ def create_app(config_name="development"):
     swagger.init_app(app)
     
     from App.Routes.music_player import song_route
-    app.register_blueprint(song_route, url_prifix="/api")
-    
+    app.register_blueprint(song_route, url_prefix="/api")
     
     from App import models
     return app
