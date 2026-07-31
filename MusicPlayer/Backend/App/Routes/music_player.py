@@ -2,6 +2,7 @@ from App.Utils.Response import error_response, success_response
 from flask import request, Blueprint, send_file
 from App.models import Song, Playlist
 from App import db
+import os
 
 song_route = Blueprint("songs", __name__)
 
@@ -69,12 +70,17 @@ def stream_song(song_id):
     try:
         song = Song.query.get(song_id)
         
-        if not song:
-            return error_response("Song not found")
+        if not song or not song.file_path:
+            return error_response("Song not found", status_code=404)
+        
+        if not os.path.exists(song.file_path):
+            return error_response("Audio file missing from local storage path", status_code=404)
         
         return send_file(
             song.file_path,
-            mimetype="audio/mpeg"
+            mimetype="audio/mpeg",
+            as_attachment=False,
+            conditional=True
         )
         
     except FileNotFoundError:

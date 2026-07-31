@@ -5,6 +5,7 @@ import { CiPause1 } from "react-icons/ci";
 import { PiFastForwardThin } from "react-icons/pi";
 import { IoMenu } from "react-icons/io5";
 import { RxLoop } from "react-icons/rx";
+import { CiHeart } from "react-icons/ci";
 
 export default function App() {
   
@@ -93,7 +94,17 @@ export default function App() {
                   gap-3 pt-4
                   text-white
             '>
-              <li className='w-full h-13 border rounded-2xl shrink-0'> </li>
+              {songs.map(
+                (song) => (
+                  <li key={song.id} className='w-full h-13 border rounded-2xl shrink-0 flex items-center gap-5 p-1 px-3'>
+                    <div className='h-full w-11 border rounded-[50%] shrink-0'></div>
+                    <h1 className='text-2xl font-semibold w-full'>{song.title}</h1>
+                    <button className='h-full w-11 shrink-0 flex items-center justify-center'>
+                      <CiHeart size={30}  />
+                    </button>
+                  </li>
+                )
+              )}
             </ul>
 
           </span>
