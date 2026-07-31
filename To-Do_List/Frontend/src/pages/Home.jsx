@@ -1,8 +1,19 @@
+import { useEffect, useState } from "react";
 import React from 'react'
 import { FaPlusCircle } from "react-icons/fa";
+import { taskService, authService } from "../service/api";
 
 const Home = () => {
-  return (
+
+  const [tasks, setTasks] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    response
+  }, [])
+  
+
+  rfalse(
     <>
         <section className='h-full w-full bg-amber-100 rounded-3xl p-4 flex flex-col'>
           
