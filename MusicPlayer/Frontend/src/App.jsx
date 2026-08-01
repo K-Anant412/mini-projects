@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { songService } from './service/api';
 
 import { CiPause1 } from "react-icons/ci";
@@ -12,6 +12,67 @@ export default function App() {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentSong, setCurrentSong] = useState(null)
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+  if (!currentSong || !currentSong.file_path || !audioRef.current) return;
+
+  // Track if this specific effect cycle has been cleaned up/canceled
+  let isCurrent = true;
+  let playPromise = null;
+
+  try {
+    audioRef.current.src = currentSong.file_path;
+    
+    // Start playback and capture the promise
+    playPromise = audioRef.current.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          // Only update state if the user hasn't skipped to another song already
+          if (isCurrent) {
+            setIsPlaying(true);
+          }
+        })
+        .catch((error) => {
+          // This safely catches the AbortError without crashing the console
+          if (error.name !== "AbortError") {
+            console.error("Playback failed:", error);
+          }
+        });
+    }
+  } catch (e) {
+    console.error("Error setting audio source:", e);
+  }
+
+  // CLEANUP FUNCTION: Runs when currentSong changes or component unmounts
+  return () => {
+    isCurrent = false;
+    if (playPromise !== null && audioRef.current) {
+      playPromise.then(() => {
+        // Only pause if the promise successfully resolved first
+        audioRef.current.pause();
+      }).catch(() => {
+        // Eat the error if it was already aborted
+      });
+    }
+  };
+}, [currentSong]);
+
+  const togglePlay = () => {
+    if (!currentSong) return ;
+   
+    if (!isPlaying) {
+      audioRef.current.pause();
+    }else{
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+  
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -39,8 +100,10 @@ export default function App() {
   }, [])
   
 
+  
   return (
     <>
+      <audio ref={audioRef} preload="none" />
       <section className='h-screen w-screen flex items-center justify-center p-5 md:p-10 lg:p-20 bg-linear-to-t from-[#403d88ee] via-[#8B639B] to-[#AF719D]'>
 
         <div 
@@ -99,8 +162,9 @@ export default function App() {
                   gap-3 pt-2 md:pt-4
                   text-white
             '>
-              {songs.map(
+              {/* {songs.map(
                 (song) => (
+                  
                   <li key={song.id} className='w-full h-13 border rounded-2xl shrink-0 flex items-center gap-5 p-1 px-3'>
                     
                     <div className='h-full w-11 border rounded-[50%] shrink-0'></div>
@@ -113,6 +177,35 @@ export default function App() {
 
                   </li>
                 )
+              )} */}
+              {songs.map(
+                (song)=>{
+                  const isSelected = currentSong?.id === song.id;
+
+                  return(
+                    <li
+                      key={song.id}
+                      onClick={() => setCurrentSong(song)}
+                      className={`
+                        w-full h-13 border rounded-2xl shrink-0 flex items-center gap-5 p-1 px-3 cursor-pointer transition-all
+                        ${isSelected ? 'bg-white/20 border-white font-bold' : 'border-white/40 hover:bg-white/10'}
+                      `}
+                    >
+                      <div className={`h-full w-11 border rounded-[50%] shrink-0 ${isSelected ? 'animate-spin [animation-duration:5s]' : ''}`}></div>
+                      <h1 className='text-lg md:text-xl font-semibold w-full truncate'>{song.title}</h1>
+
+                      <button 
+                        className='h-full w-11 shrink-0 flex items-center justify-center'
+                        onClick={(e) => {
+                          e.stopPropagation(); 
+                          console.log("Liked:", song.title);
+                        }}
+                      >
+                        <CiHeart size={30} />
+                      </button>
+                    </li>
+                  )
+                }
               )}
             </ul>
 
@@ -133,7 +226,7 @@ export default function App() {
               shrink-0 md:shrink
           '>
             <div className='w-36 h-36 md:w-70 md:h-70 border rounded-[50%] md:mt-10 bg-gray-400 border-gray-400 shrink-0'>
-
+              {currentSong?.coverUrl && <img src={currentSong.coverUrl} alt={currentSong.title} className="w-full h-full object-cover" />}
             </div>
 
             <div className='w-[85%] h-12 border text-white rounded-4xl shrink-0'>
@@ -145,7 +238,9 @@ export default function App() {
                   className="w-full cursor-pointer"
                 />
 
-                <p className="mt-1 text-center text-xs md:text-sm">not</p>
+                <p className="mt-1 text-center text-xs md:text-sm">
+                  {currentSong ? currentSong.title : "Select a song"}
+                </p>
               </div>
             </div>
 
@@ -161,12 +256,15 @@ export default function App() {
                   <PiFastForwardThin className=' transform rotate-180 text-[35px] md:text-[55px]' />
                 </button>
 
-                <button className='w-14 h-14 md:w-20 md:h-20 rounded-[50%] flex items-center justify-center' onClick={()=>console.log("song played")
-                }>
+                <button className='w-14 h-14 md:w-20 md:h-20 rounded-[50%] flex items-center justify-center' 
+                onClick={togglePlay}>
                   <CiPause1 className='text-[30px] md:text-[50px]' />
                 </button>
 
-                <button className='w-14 h-14 md:w-20 md:h-20 rounded-[50%] flex items-center justify-center'>
+                <button
+                  onClick={()=>{console.log("Current song:",audioRef);
+                  }}
+                  className='w-14 h-14 md:w-20 md:h-20 rounded-[50%] flex items-center justify-center'>
                   <PiFastForwardThin className='text-[35px] md:text-[55px]' />
                 </button>
               </div>
