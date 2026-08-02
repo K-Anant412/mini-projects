@@ -8,102 +8,94 @@ import { RxLoop } from "react-icons/rx";
 import { CiHeart } from "react-icons/ci";
 
 export default function App() {
-  
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentSong, setCurrentSong] = useState(null)
+  const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
+  const API_BASE_URL = "http://localhost:5000"; 
+
   useEffect(() => {
-  if (!currentSong || !currentSong.file_path || !audioRef.current) return;
+    if (!currentSong || !currentSong.id || !audioRef.current) return;
 
-  // Track if this specific effect cycle has been cleaned up/canceled
-  let isCurrent = true;
-  let playPromise = null;
+    let isCurrent = true;
+    let playPromise = null;
 
-  try {
-    audioRef.current.src = currentSong.file_path;
-    
-    // Start playback and capture the promise
-    playPromise = audioRef.current.play();
+    try {
 
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          // Only update state if the user hasn't skipped to another song already
-          if (isCurrent) {
-            setIsPlaying(true);
-          }
-        })
-        .catch((error) => {
-          // This safely catches the AbortError without crashing the console
-          if (error.name !== "AbortError") {
-            console.error("Playback failed:", error);
-          }
-        });
+      const streamUrl = songService.getStreamUrl(currentSong.id);
+      console.log("🎯 Streaming audio from URL:", streamUrl);
+
+      audioRef.current.src = `${API_BASE_URL}/api/stream/${currentSong.id}`;
+      
+      playPromise = audioRef.current.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            if (isCurrent) setIsPlaying(true);
+          })
+          .catch((error) => {
+            if (error.name !== "AbortError") {
+              console.error("Playback failed:", error);
+            }
+          });
+      }
+    } catch (e) {
+      console.error("Error setting audio source:", e);
     }
-  } catch (e) {
-    console.error("Error setting audio source:", e);
-  }
 
-  // CLEANUP FUNCTION: Runs when currentSong changes or component unmounts
-  return () => {
-    isCurrent = false;
-    if (playPromise !== null && audioRef.current) {
-      playPromise.then(() => {
-        // Only pause if the promise successfully resolved first
-        audioRef.current.pause();
-      }).catch(() => {
-        // Eat the error if it was already aborted
-      });
-    }
-  };
-}, [currentSong]);
+    return () => {
+      isCurrent = false;
+      if (playPromise !== null && audioRef.current) {
+        playPromise.then(() => {
+          audioRef.current.pause();
+        }).catch(() => {});
+      }
+    };
+  }, [currentSong]);
 
   const togglePlay = () => {
-    if (!currentSong) return ;
+    if (!currentSong || !audioRef.current) return;
    
-    if (!isPlaying) {
+    if (isPlaying) {
       audioRef.current.pause();
-    }else{
-      audioRef.current.play();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(err => console.error("Play failed via toggle:", err));
     }
-    setIsPlaying(!isPlaying);
   };
-  
 
   useEffect(() => {
     const fetchSongs = async () => {
-      try{
+      try {
         setLoading(true);
-
         const response = await songService.getSongs();
 
+        // console.log("response data:", response.data);
+        
         if (response.data && response.data.success) {
           setSongs(response.data.data);
-        }else{
-          setError("failes to parse music library data.")
+        } else {
+          setError("Failed to parse music library data.");
         }
-
-        console.log(response.data.data);
-        
-      }catch(err){
+      } catch (err) {
         console.error("Error fetching tracks from server:", err);
         setError("Could not connect to the music server.");
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
     fetchSongs();
-  }, [])
-  
+  }, []);
 
-  
   return (
     <>
-      <audio ref={audioRef} preload="none" />
+    <audio ref={audioRef} preload="none" />
       <section className='h-screen w-screen flex items-center justify-center p-5 md:p-10 lg:p-20 bg-linear-to-t from-[#403d88ee] via-[#8B639B] to-[#AF719D]'>
 
         <div 
@@ -162,22 +154,6 @@ export default function App() {
                   gap-3 pt-2 md:pt-4
                   text-white
             '>
-              {/* {songs.map(
-                (song) => (
-                  
-                  <li key={song.id} className='w-full h-13 border rounded-2xl shrink-0 flex items-center gap-5 p-1 px-3'>
-                    
-                    <div className='h-full w-11 border rounded-[50%] shrink-0'></div>
-                    
-                    <h1 className='text-lg md:text-xl font-semibold w-full truncate'>{song.title}</h1>
-                    
-                    <button className='h-full w-11 shrink-0 flex items-center justify-center'>
-                      <CiHeart size={30}  />
-                    </button>
-
-                  </li>
-                )
-              )} */}
               {songs.map(
                 (song)=>{
                   const isSelected = currentSong?.id === song.id;
@@ -211,7 +187,7 @@ export default function App() {
 
           </div>
 
-          <span
+          <div
             className='
               border md:border-2
               w-full h-[50%]
@@ -229,7 +205,7 @@ export default function App() {
               {currentSong?.coverUrl && <img src={currentSong.coverUrl} alt={currentSong.title} className="w-full h-full object-cover" />}
             </div>
 
-            <div className='w-[85%] h-12 border text-white rounded-4xl shrink-0'>
+            <div className='w-[85%] h-fit border text-white rounded-4xl shrink-0'>
               <div className="w-full max-w-xl mx-auto p-4">
                 <input
                   type="range"
@@ -274,9 +250,9 @@ export default function App() {
               </button>
             
             </div>
-          </span>
+          </div>
         </div>
       </section>
-    </>
+      </>
   );
 }
