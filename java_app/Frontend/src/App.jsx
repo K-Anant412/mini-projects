@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 
 import Home from './pages/Home'
+import SubBody from './pages/SubBody'
 
 function App() {
 
@@ -9,11 +10,13 @@ function App() {
     <>
       <section className='w-screen h-screen overflow-x-hidden overflow-y-auto scrollbar-none'>
 
-       <Home />
+      <Home />
+      <SubBody />
 
-        <div className='w-full h-full bg-[#E8F5E9]'>
+      <div className='w-full h-full'>
 
-        </div>
+      </div>
+        
       </section>
     </>
   )
