@@ -50,7 +50,7 @@ const SubBody = () => {
 
             <div className=' w-[40%] h-80 rounded-3xl flex items-center justify-center bg-[#E8F5E9] overflow-hidden shadow-[6px_8px_20px_rgba(0,0,0,0.22),-8px_-8px_20px_rgba(255,255,255,0.12)]'>
 
-              <span className='w-[50%] h-full flex flex-col items-start pl-10 justify-around shrink-0'>
+              <span className='w-[50%] h-full flex flex-col items-start pl-10 justify-around shrink-0 bg-white'>
 
                 <h3 className='text-2xl font-semibold font-[Playfair_Display] w-full h-fit pt-5'>
                   Big Sale Products
@@ -75,7 +75,7 @@ const SubBody = () => {
 
             <div className=' w-[40%] h-80 rounded-3xl flex items-center justify-center bg-[#E8F5E9] overflow-hidden shadow-[6px_8px_20px_rgba(0,0,0,0.22),-8px_-8px_20px_rgba(255,255,255,0.12)]'>
 
-              <span className='w-[50%] h-full flex flex-col items-start pl-10 justify-around shrink-0'>
+              <span className='w-[50%] h-full flex flex-col items-start pl-10 justify-around shrink-0 bg-white'>
 
                 <h3 className='text-2xl font-semibold font-[Playfair_Display] w-full h-fit pt-5'>
                    Top Products
